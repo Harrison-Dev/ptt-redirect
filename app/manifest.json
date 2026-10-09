@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "PTT Redirect (Unofficial)",
   "short_name": "PTT Redirect",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Automatically return PTT mirror articles to their original posts on ptt.cc. No tracking or backend.",
   "icons": {
     "16": "images/icon-16.png",
@@ -46,7 +46,12 @@
         "*://pttsuperstar.com/*",
         "*://pttboygirl.com/*",
         "*://pttfoodtravel.com/*",
-        "*://ptttaiwan.com/*"
+        "*://ptttaiwan.com/*",
+        "*://nextptt.app/boards/*",
+        "*://www.nextptt.app/boards/*",
+        "*://hotptt.com/*",
+        "*://www.hotptt.com/*",
+        "*://webptt.findrate.tw/bbs/*"
       ],
       "js": [
         "scripts/redirect.js"

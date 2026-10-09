@@ -1,0 +1,15 @@
+name: Test
+on:
+  pull_request:
+  push:
+    branches: [master]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/*.test.cjs
+      - run: node -e "const m=require('./app/manifest.json'); if(m.manifest_version!==3||m.permissions||m.background) process.exit(1)"

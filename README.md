@@ -24,6 +24,18 @@ Destination host, board name and PTT article ID are strictly validated. If no va
 
 The match list is in `app/manifest.json`. The extension uses no remotely hosted code.
 
+### Newly supported mirror formats
+
+| Mirror | Example pattern | Conversion |
+| --- | --- | --- |
+| `nextptt.app` / nPTT | `/boards/Stock/post/M.1791522087.A.1B8` | Direct URL mapping |
+| `webptt.findrate.tw` | `/bbs/Stock/M.1749741793.A.C6F.html` | Direct URL mapping |
+| `hotptt.com` | `/f64xuswj76` | Local extraction of the original **文章網址** footer |
+
+These were added after checking example article pages. The older community [PTT Sites Redirection](https://greasyfork.org/en/scripts/469530-ptt-sites-redirection) site list also mentions `pttdigit.com` and `pttcomic.com`, but those domains are **candidates only** until their current article URL structures are verified. These lists are not live, exhaustive registries.
+
+
+
 ## Tests
 
 Node.js 20+ is used **only for tests** (not required to install/run the extension):

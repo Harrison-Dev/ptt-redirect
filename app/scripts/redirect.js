@@ -21,10 +21,12 @@
     'ptttaiwan.com'
   ]);
   const metadataHosts = new Set([
-    'disp.cc', 'btrend.amassly.com', 'ptt.jimpop.org', 'laiptt.online'
+    'disp.cc', 'btrend.amassly.com', 'ptt.jimpop.org', 'laiptt.online',
+    'hotptt.com'
   ]);
   const specialHosts = new Set([
-    'pttweb.cc', 'moptt.tw', 'webptt.com', 'ucptt.com', 'pttgossip.com'
+    'pttweb.cc', 'moptt.tw', 'webptt.com', 'ucptt.com', 'pttgossip.com',
+    'nextptt.app', 'webptt.findrate.tw'
   ]);
 
   // Never navigate to a non-PTT address sourced from a mirror's DOM.
@@ -47,6 +49,15 @@
 
   function fromUrl() {
     let match;
+    if (host === 'nextptt.app') {
+      // nPTT: /boards/<board>/post/<original-PTT-article-ID>
+      match = page.pathname.match(/^\/boards\/([^/]+)\/post\/(M\.\d{10}\.A\.[0-9a-f]{3})(?:\.html)?\/?$/i);
+      return match ? articleUrl(match[1], match[2]) : null;
+    }
+    if (host === 'webptt.findrate.tw') {
+      match = page.pathname.match(/^\/bbs\/([^/]+)\/(M\.\d{10}\.A\.[0-9a-f]{3})\.html\/?$/i);
+      return match ? articleUrl(match[1], match[2]) : null;
+    }
     if (host === 'pttweb.cc') {
       match = page.pathname.match(/^\/bbs\/([^/]+)\/(M\.\d{10}\.A\.[0-9a-f]{3})(?:\.html)?\/?$/i);
       return match ? articleUrl(match[1], match[2]) : null;

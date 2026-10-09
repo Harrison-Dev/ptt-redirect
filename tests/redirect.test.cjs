@@ -66,3 +66,40 @@ test('board index and missing source stay unchanged', () => {
   assert.equal(resolve('https://pttweb.cc/bbs/Steam'), null);
   assert.equal(resolve('https://pttgamer.com/Steam/compactId'), null);
 });
+
+
+test('nPTT article URL redirects to original PTT article', () => {
+  assert.equal(resolve('https://nextptt.app/boards/Stock/post/M.1791522087.A.1B8'),
+    'https://www.ptt.cc/bbs/Stock/M.1791522087.A.1B8.html');
+  assert.equal(resolve('https://www.nextptt.app/boards/Stock/post/M.1791522087.A.1b8?source=search'),
+    'https://www.ptt.cc/bbs/Stock/M.1791522087.A.1B8.html');
+});
+test('nPTT board listing, fake IDs and extra path segments never redirect', () => {
+  assert.equal(resolve('https://nextptt.app/boards/Stock'), null);
+  assert.equal(resolve('https://nextptt.app/boards/Stock/post/invalid'), null);
+  assert.equal(resolve('https://nextptt.app/boards/Stock/post/M.1791522087.A.1B8/other'), null);
+});
+test('webptt.findrate.tw direct article URLs redirect but indexes do not', () => {
+  assert.equal(resolve('https://webptt.findrate.tw/bbs/Stock/M.1749741793.A.C6F.html'),
+    'https://www.ptt.cc/bbs/Stock/M.1749741793.A.C6F.html');
+  assert.equal(resolve('https://webptt.findrate.tw/bbs/Stock/index.html'), null);
+});
+test('hotptt.com opaque article IDs use visible PTT source footer', () => {
+  assert.equal(resolve('https://hotptt.com/f64xuswj76', {
+    text: '※ 文章網址: https://www.ptt.cc/bbs/Gossiping/M.1713884069.A.BF4.html'
+  }), 'https://www.ptt.cc/bbs/Gossiping/M.1713884069.A.BF4.html');
+  assert.equal(resolve('https://hotptt.com/random', { text: 'No original URL' }), null);
+});
+test('manifest only matches explicit mirror hosts and includes new domains', () => {
+  const { content_scripts: [config], permissions, background } = require('../app/manifest.json');
+  assert.equal(permissions, undefined);
+  assert.equal(background, undefined);
+  for (const pattern of [
+    '*://nextptt.app/boards/*',
+    '*://www.nextptt.app/boards/*',
+    '*://webptt.findrate.tw/bbs/*',
+    '*://hotptt.com/*'
+  ]) {
+    assert.ok(config.matches.includes(pattern), 'Missing ' + pattern);
+  }
+});
